@@ -1,0 +1,27 @@
+{
+    "branches": [
+        {
+            "name": "master"
+        },
+        {
+            "name": "release",
+            "channel": "release",
+            "prerelease": "rc"
+        },
+        {
+            "name": "develop",
+            "channel": "develop",
+            "prerelease": "alpha"
+        },
+        {
+            "name": "feature/*",
+            "prerelease": "${name.replace(/^feature\\//g, '').toLowerCase().replace(/[^a-z0-9\\-]/g, '-')}"
+        }
+    ],
+    "tagFormat": "${version}",
+    "plugins": [
+        "@semantic-release/commit-analyzer",
+        "@semantic-release/release-notes-generator",
+        "@semantic-release/npm"
+    ]
+}
