@@ -1,27 +1,38 @@
 {
-    "branches": [
-        {
-            "name": "master"
-        },
-        {
-            "name": "release",
-            "channel": "release",
-            "prerelease": "rc"
-        },
-        {
-            "name": "develop",
-            "channel": "develop",
-            "prerelease": "alpha"
-        },
-        {
-            "name": "feature/*",
-            "prerelease": "${name.replace(/^feature\\//g, '').toLowerCase().replace(/[^a-z0-9\\-]/g, '-')}"
-        }
-    ],
-    "tagFormat": "${version}",
-    "plugins": [
-        "@semantic-release/commit-analyzer",
-        "@semantic-release/release-notes-generator",
-        "@semantic-release/npm"
+  "branches": [
+    {
+      "name": "main"
+    },
+    {
+      "name": "release",
+      "channel": "release",
+      "prerelease": "rc"
+    },
+    {
+      "name": "develop",
+      "channel": "develop",
+      "prerelease": "alpha"
+    },
+    {
+      "name": "feature/*",
+      "prerelease": "${name.replace(/^feature\\//g, '').toLowerCase().replace(/[^a-z0-9\\-]/g, '-')}"
+    }
+  ],
+  "tagFormat": "${version}",
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/npm",
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "dist/**/*.{js,css}",
+          "docs",
+          "package.json"
+        ],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
     ]
+  ]
 }
