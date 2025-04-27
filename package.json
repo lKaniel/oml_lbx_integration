@@ -25,7 +25,8 @@
     "sdk",
     "openmedialogic"
   ],
-  "author": "",
+  "author": "Vitalii Shevchuk",
+  "email": "vitshev120@gmail.com",
   "license": "ISC",
   "packageManager": "pnpm@10.9.0",
   "devDependencies": {
