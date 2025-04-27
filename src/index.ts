@@ -1,5 +1,5 @@
 // Main entry point for the SDK
-export * from "./sdk.js";
+export { OpenMediaLogicClient } from "./sdk.js";
 export { type PaginationParams } from "./types/params/paginationParams.js";
 export { type FilterParams } from "./types/params/filterParams.js";
 export { type SortParams } from "./types/params/sortParams.js";

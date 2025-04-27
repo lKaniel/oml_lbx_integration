@@ -395,4 +395,4 @@ class OpenMediaLogicClient {
     }
 }
 
-export default OpenMediaLogicClient;
+export { OpenMediaLogicClient };
