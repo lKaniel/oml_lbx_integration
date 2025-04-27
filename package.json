@@ -20,7 +20,11 @@
     "build": "tsc",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["api", "sdk", "openmedialogic"],
+  "keywords": [
+    "api",
+    "sdk",
+    "openmedialogic"
+  ],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.9.0",
