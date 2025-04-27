@@ -12,10 +12,6 @@
       "name": "develop",
       "channel": "develop",
       "prerelease": "alpha"
-    },
-    {
-      "name": "feature/*",
-      "prerelease": "${name.replace(/^feature\\//g, '').toLowerCase().replace(/[^a-z0-9\\-]/g, '-')}"
     }
   ],
   "tagFormat": "${version}",

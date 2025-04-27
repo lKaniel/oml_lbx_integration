@@ -1,0 +1,50 @@
+import { Agency } from "./agency.js";
+import { Advertiser } from "./advertiser.js";
+import { PlacementType } from "./placementType.js";
+import { CommercialType } from "./commercialType.js";
+import { Order } from "./order.js";
+import { Year } from "./year.js";
+import { Discount } from "./discount.js";
+
+export interface Project {
+    id?: number;
+    agency_id?: number;
+    advertiser_id: number;
+    year_id: number;
+    placement_type_id?: number;
+    commercial_type_id?: number;
+    name: string;
+    taxes?: boolean;
+    is_closed?: boolean;
+    are_mpc_settings_editable_by_agencies?: boolean;
+    estimated_budget?: number;
+    date_from: string;
+    date_to: string;
+    created_at?: string;
+    updated_at?: string;
+    deleted_at?: string | null;
+    plan_budget?: number;
+    fact_budget?: number;
+    plan_fact_budget?: number;
+    commitment_budget?: number;
+    is_calculating?: number;
+    agency?: Agency | null;
+    advertiser?: Advertiser | null;
+    year?: Year | null;
+    placement_type?: PlacementType | null;
+    commercial_type?: CommercialType | null;
+    orders?: Order[];
+    premium_position_discounts?: {
+        "1F"?: number;
+        "2F"?: number;
+        "3F"?: number;
+        "3L"?: number;
+        "2L"?: number;
+        "1L"?: number;
+    } | null;
+    discounts?: Discount[];
+    budget_limits_applied?: boolean;
+    is_vip?: boolean;
+    vip_dates?: string;
+    limit_advertiser_in_auction_block?: number;
+}

@@ -1,31 +1,32 @@
 // OpenMediaLogic API TypeScript SDK
 // Generated SDK for OpenMediaLogic API
 
-import axios, { type AxiosInstance } from "axios";
-
-// Base API types
-export interface PaginationParams {
-    page?: number;
-    per_page?: number;
-}
-
-export interface FilterParams {
-    [key: string]: any;
-}
-
-export interface SortParams {
-    sort?: string;
-}
-
-export interface IncludeParams {
-    include?: string;
-}
-
-export interface FieldParams {
-    fields?: {
-        [key: string]: string;
-    };
-}
+import { FilterParams } from "./types/params/filterParams.js";
+import { SortParams } from "./types/params/sortParams.js";
+import { IncludeParams } from "./types/params/includeParams.js";
+import { FieldParams } from "./types/params/fieldParams.js";
+import { Advertiser } from "./types/advertiser.js";
+import { Agency } from "./types/agency.js";
+import { Brand } from "./types/brand.js";
+import { BrandClass } from "./types/brandClass.js";
+import { BrandGroup } from "./types/brandGroup.js";
+import { Block } from "./types/block.js";
+import { BlockType } from "./types/blockType.js";
+import { Channel } from "./types/channel.js";
+import { ChannelCompany } from "./types/channelCompany.js";
+import { Commercial } from "./types/commercial.js";
+import { CommercialType } from "./types/commercialType.js";
+import { CommercialVersionType } from "./types/commercialVersionType.js";
+import { MeasurementCompany } from "./types/measurementCompany.js";
+import { Mediaplan } from "./types/mediaplan.js";
+import { Order } from "./types/order.js";
+import { PlacementType } from "./types/placementType.js";
+import { Project } from "./types/project.js";
+import { Saleshouse } from "./types/saleshouse.js";
+import { TargetAudience } from "./types/targetAudience.js";
+import { User } from "./types/user.js";
+import { Year } from "./types/year.js";
+import { PaginationParams } from "./types/params/paginationParams.js";
 
 export interface ApiResponse<T> {
     data: T;
@@ -37,600 +38,10 @@ export interface ApiResponse<T> {
     };
 }
 
-// Model interfaces
-export interface Advertiser {
-    id?: number;
-    name: string;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-    agencies?: Agency[];
-    brands?: Brand[];
-    projects?: Project[];
-    retro_bonus_scales?: RetroBonusScale[] | null;
-}
-
-export interface Agency {
-    id?: number;
-    name: string;
-    advertisers?: Advertiser[];
-    projects?: Project[];
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-    allow_mass_copy?: boolean;
-}
-
 export interface TokenResource {
     access_token: string;
     token_type: string;
     expires_in: number;
-}
-
-export interface Brand {
-    id?: number;
-    advertiser_id: number;
-    advertiser?: Advertiser;
-    brand_group_id?: number;
-    brand_group?: BrandGroup;
-    name: string;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-    commercials?: Commercial[];
-}
-
-export interface BrandClass {
-    id?: number;
-    name: string;
-    brand_groups?: BrandGroup[];
-}
-
-export interface BrandGroup {
-    id?: number;
-    name: string;
-    brand_class_id: number;
-    brand_class?: BrandClass;
-}
-
-export interface Block {
-    id?: number;
-    channel_id: number;
-    program_release_id?: number | null;
-    commercial_type_id: number;
-    block_type_id?: number;
-    date_start_at: string;
-    time_start_at: string;
-    date_end_at: string;
-    time_end_at: string;
-    duration: number;
-    actual_duration?: number;
-    pullable_duration?: number;
-    low_priority_duration?: number;
-    broadcast_day?: string;
-    start_interval?: number;
-    end_interval?: number;
-    auction_step_coeff?: number;
-    is_fixed_price?: boolean;
-    created_at?: string;
-    updated_at?: string;
-    is_calculating?: number;
-    channel?: Channel;
-    program_release?: ProgramRelease;
-    commercial_type?: CommercialType;
-    block_type?: BlockType;
-    spots?: Spot[] | null;
-    block_prices?: BlockPrice[] | null;
-}
-
-export interface BlockType {
-    id: number;
-    name: string;
-}
-
-export interface BlockPrice {
-    block_id?: number | null;
-    target_audience_id?: number | null;
-    price: number;
-    Block?: Block | null;
-    target_audience?: TargetAudience | null;
-}
-
-export interface Channel {
-    id?: number;
-    saleshouse_id?: number;
-    saleshouse?: Saleshouse;
-    channel_company_id?: number;
-    channel_company?: ChannelCompany;
-    main_channel_id?: number;
-    main_channel?: Channel;
-    name: string;
-    broadcasting_copy?: boolean;
-    is_visible?: boolean;
-    channel_settings?: {
-        [year: string]: ChannelSetting;
-    };
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-    commercials?: Commercial[];
-    grps?: Grp[];
-    discounts?: ChannelDiscount[];
-}
-
-export interface ChannelCompany {
-    id?: number;
-    name: string;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-}
-
-export interface ChannelSetting {
-    id?: number;
-    year_id?: number;
-    channel_id?: number;
-    saleshouse_id?: number;
-    saleshouse?: Saleshouse;
-    holding_id?: number;
-    holding?: Holding;
-    base_target_audience_id?: number;
-    base_target_audience?: TargetAudience;
-    closing_datetimes?: {
-        [key: string]: {
-            start_interval: number;
-            time?: string;
-            days: number[];
-        };
-    };
-    prime_time_datetimes?: Array<{
-        start_at?: string;
-        end_at?: string;
-        start_interval: number;
-        duration: number;
-        end_interval: number;
-        days: number[];
-    }>;
-    channel_setting_prime_time?: ChannelSettingPrimeTime[];
-    sh_quota_percent_prime_time?: number;
-    sh_quota_percent_off_prime_time?: number;
-    default_plan_grp?: number;
-    default_fact_grp?: number;
-    saleshouse_commission?: number;
-    auction_step_coeff?: number;
-    start_interval?: number;
-    is_tv_network?: boolean;
-}
-
-export interface ChannelSettingPrimeTime {
-    id?: number;
-    channel_setting_id: number;
-    day_of_week: number;
-    time_start_at: string;
-    time_end_at: string;
-    start_interval?: number;
-    end_interval?: number;
-    duration?: number;
-    created_at?: string;
-    updated_at?: string;
-}
-
-export interface Commercial {
-    id?: number;
-    commercial_version_type_id: number;
-    commercial_type_id: number;
-    brand_id: number;
-    co_brand_id?: number;
-    co_branding_discount?: number;
-    external_id?: number | null;
-    name: string;
-    duration: number;
-    legal_before_at: string;
-    url: string | null;
-    status?: number;
-    is_visible?: boolean;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-    commercial_version_type?: CommercialVersionType | null;
-    commercial_type?: CommercialType | null;
-    Brand?: Brand | null;
-    co_brand?: Brand | null;
-    mediaplans?: Mediaplan[];
-    channels?: Channel[];
-    is_approved?: boolean | null;
-    approve_comment?: string | null;
-}
-
-export interface CommercialType {
-    id: number;
-    name: string;
-    projects?: Project[];
-    commercials?: Commercial[];
-}
-
-export interface CommercialVersionType {
-    id?: number;
-    name: string;
-    deleted_at?: string | null;
-    commercials?: Commercial[];
-}
-
-export interface Grp {
-    id?: number;
-    channel_id: number;
-    measurement_company_id: number;
-    target_audience_id: number;
-    day: string;
-    time_from: string;
-    price: number;
-    channel?: Channel;
-    measurementCompany?: MeasurementCompany;
-    targetAudience?: TargetAudience;
-    blocks?: Block[];
-}
-
-export interface Holding {
-    id: number;
-    name: string;
-    created_at?: string;
-    updated_at?: string;
-    channel_settings?: ChannelSetting[];
-    retro_bonus_scales?: RetroBonusScale[];
-}
-
-export interface MeasurementCompany {
-    id?: number;
-    name: string;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-    targetAudiences?: TargetAudience[];
-    grps?: Grp[];
-}
-
-export interface Mediaplan {
-    id?: number;
-    order_id: number;
-    brand_id: number;
-    channel_id: number;
-    placement_type_id: number;
-    commercial_type_id: number;
-    target_audience_id: number;
-    distribution_type?: number;
-    name: string;
-    taxes?: boolean;
-    is_closed?: boolean;
-    is_automatic?: boolean;
-    disallow_ejection?: boolean;
-    is_one_commercial_in_block?: boolean;
-    is_fixed_price_blocks_allowed?: boolean;
-    estimated_budget?: number;
-    plan_budget?: number;
-    fact_budget?: number;
-    plan_fact_budget?: number;
-    commitment_budget?: number;
-    pure_mp_plan_wgrp?: number;
-    pure_commitment_wgrp?: number;
-    pure_mp_fact_wgrp?: number;
-    pure_mp_plan_fact_wgrp?: number;
-    pure_mp_plan_fact_wgrp_prime?: number;
-    pure_mp_plan_fact_wgrp_off_prime?: number;
-    mp_plan_wgrp?: number;
-    commitment_wgrp?: number;
-    mp_fact_wgrp?: number;
-    mp_plan_fact_wgrp?: number;
-    mp_plan_fact_wgrp_prime?: number;
-    mp_plan_fact_wgrp_off_prime?: number;
-    discount_coefficient?: number;
-    placement_type_discount_coefficient?: number;
-    basic_cpp_prime_cost?: number;
-    basic_cpp_off_prime_cost?: number;
-    spots_count?: number;
-    spots_duration?: number;
-    is_budget_fixed?: boolean;
-    date_from: string;
-    date_to: string;
-    premium_position_discounts?: {
-        "1F"?: number;
-        "2F"?: number;
-        "3F"?: number;
-        "3L"?: number;
-        "2L"?: number;
-        "1L"?: number;
-    } | null;
-    created_at?: string;
-    updated_at?: string;
-    is_calculating?: number;
-    order?: Order;
-    brand?: Brand | null;
-    channel?: Channel;
-    placement_type?: PlacementType;
-    commercial_type?: CommercialType;
-    target_audience?: TargetAudience;
-    commercials?: Commercial[];
-    vip_dates?: VipDate[];
-    discounts?: Discount[];
-    is_vip?: boolean;
-}
-
-export interface Order {
-    id?: number;
-    project_id: number;
-    placement_type_id: number;
-    commercial_type_id: number;
-    name: string;
-    taxes?: boolean;
-    is_closed?: boolean;
-    estimated_budget?: number;
-    date_from: string;
-    date_to: string;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-    plan_budget?: number;
-    fact_budget?: number;
-    plan_fact_budget?: number;
-    commitment_budget?: number;
-    is_calculating?: number;
-    project?: Project | null;
-    placement_type?: PlacementType | null;
-    commercial_type?: CommercialType | null;
-    order_settings?: OrderSetting[];
-    mediaplans?: Mediaplan[];
-    discounts?: Discount[];
-    is_vip?: boolean;
-    vip_dates?: string;
-}
-
-export interface OrderSetting {
-    order_id: number;
-    channel_id: number;
-    target_audience_id: number;
-    order?: Order;
-    channel?: Channel;
-    target_audience?: TargetAudience;
-}
-
-export interface PlacementType {
-    id: number;
-    name: string;
-    projects?: Project[];
-}
-
-export interface PremiumPositionDiscount {
-    id?: number;
-    name: string;
-    percent: number;
-    from: string;
-    to: string;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-}
-
-export interface Program {
-    id?: number;
-    genre_id?: number;
-    genre?: Genre;
-    name: string;
-    duration?: string;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-}
-
-export interface ProgramRelease {
-    id?: number;
-    channel_id: number;
-    channel?: Channel;
-    program_id: number;
-    program?: Program;
-    name?: string;
-    date_start_at?: string;
-    time_start_at?: string;
-    date_end_at?: string;
-    time_end_at?: string;
-    duration?: string;
-    broadcast_day: string;
-    start_interval: number;
-    end_interval?: number;
-    broadcast_duration: number;
-    created_at?: string;
-    updated_at?: string;
-}
-
-export interface Project {
-    id?: number;
-    agency_id?: number;
-    advertiser_id: number;
-    year_id: number;
-    placement_type_id?: number;
-    commercial_type_id?: number;
-    name: string;
-    taxes?: boolean;
-    is_closed?: boolean;
-    are_mpc_settings_editable_by_agencies?: boolean;
-    estimated_budget?: number;
-    date_from: string;
-    date_to: string;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-    plan_budget?: number;
-    fact_budget?: number;
-    plan_fact_budget?: number;
-    commitment_budget?: number;
-    is_calculating?: number;
-    agency?: Agency | null;
-    advertiser?: Advertiser | null;
-    year?: Year | null;
-    placement_type?: PlacementType | null;
-    commercial_type?: CommercialType | null;
-    orders?: Order[];
-    premium_position_discounts?: {
-        "1F"?: number;
-        "2F"?: number;
-        "3F"?: number;
-        "3L"?: number;
-        "2L"?: number;
-        "1L"?: number;
-    } | null;
-    discounts?: Discount[];
-    budget_limits_applied?: boolean;
-    is_vip?: boolean;
-    vip_dates?: string;
-    limit_advertiser_in_auction_block?: number;
-}
-
-export interface RetroBonusScale {
-    id: number;
-    year_id: number;
-    advertiser_id?: number;
-    holding_id: number;
-    created_at?: string;
-    updated_at?: string;
-    advertiser?: Advertiser;
-    holding?: Holding;
-    retro_bonus_scale_details?: RetroBonusScaleDetail[];
-}
-
-export interface RetroBonusScaleDetail {
-    id?: number;
-    retro_bonus_scale_id: number;
-    budget: number;
-    percent: number;
-    retroBonusScale?: RetroBonusScale;
-}
-
-export interface Saleshouse {
-    id?: number;
-    name: string;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-    channels?: Channel[];
-    saleshouse_settings?: Channel[];
-}
-
-export interface Spot {
-    id?: number;
-    block_id: number;
-    mediaplan_id?: number;
-    commercial_id: number;
-    double_spot_id?: string;
-    distance?: number;
-    priorities?: number;
-    position?: string;
-    actual_position?: string;
-    order?: number;
-    plan_wgrp?: number;
-    fact_wgrp?: number;
-    plan_fact_wgrp?: number;
-    pure_plan_wgrp?: number;
-    pure_fact_wgrp?: number;
-    pure_plan_fact_wgrp?: number;
-    is_active?: boolean;
-    created_at?: string;
-    updated_at?: string;
-    fact_grp_upload_details_id?: number;
-    channel_project_price_project_id?: number;
-    auction_coeff?: number | null;
-    is_vip?: boolean;
-}
-
-export interface TargetAudience {
-    id?: number;
-    measurement_company_id?: number;
-    name: string;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-    grps?: Grp[];
-}
-
-export interface User {
-    id?: number;
-    name: string;
-    email: string;
-    password: string;
-    login: string;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-    roles?: Role[];
-    permissions?: Permission[];
-    access_permissions?: {
-        access?: {
-            saleshouse_ids?: number[];
-            agency_ids?: number[];
-            channel_ids?: number[];
-            project_ids?: number[];
-            advertiser_ids?: number[];
-            brand_ids?: number[];
-        };
-        deny?: {
-            project_ids?: number[];
-            advertiser_ids?: number[];
-            brand_ids?: number[];
-        };
-    };
-}
-
-export interface Role {
-    id?: number;
-    name: string;
-    permissions?: Permission[];
-    users?: User[];
-}
-
-export interface Permission {
-    id?: number;
-    name: string;
-    roles?: Role[];
-    users?: User[];
-}
-
-export interface VipDate {
-    from: string;
-    to: string;
-    auction_coeff: number;
-}
-
-export interface Year {
-    id: number;
-    channel_settings?: ChannelSetting[];
-    projects?: Project[];
-}
-
-export interface Genre {
-    id?: number;
-    name: string;
-    deleted_at?: string | null;
-}
-
-export interface ChannelDiscount {
-    id?: number;
-    channel_id: number;
-    year_id: number;
-    month_id: number;
-    percent: number;
-    created_at?: string;
-    updated_at?: string;
-}
-
-export interface Discount {
-    id?: number;
-    discount_type_id: number;
-    from: string;
-    to: string;
-    percent?: number;
-    type?: number;
-    order?: number | null;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string | null;
-    discountable?: Project | Order | Mediaplan | null;
 }
 
 export interface UserLoginRequest {
@@ -638,29 +49,15 @@ export interface UserLoginRequest {
     password: string;
 }
 
+type RequestParams = Record<string, string | number | boolean | undefined>;
+
 // API client class
 class OpenMediaLogicClient {
-    private api: AxiosInstance;
     private baseUrl: string;
     private token: string | null = null;
 
     constructor(baseUrl: string = "http://localhost") {
         this.baseUrl = baseUrl;
-        this.api = axios.create({
-            baseURL: baseUrl,
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-        });
-
-        // Add interceptor to add token to all requests
-        this.api.interceptors.request.use((config) => {
-            if (this.token) {
-                config.headers.Authorization = `Bearer ${this.token}`;
-            }
-            return config;
-        });
     }
 
     setToken(token: string | null = null): void {
@@ -669,51 +66,54 @@ class OpenMediaLogicClient {
 
     // Authentication methods
     async login(credentials: UserLoginRequest): Promise<TokenResource> {
-        const response = await this.api.post<TokenResource>("/api/auth/login", credentials);
-        console.log(response.data);
+        const response = await this.request<TokenResource>("POST", "/api/auth/login", credentials);
+        this.token = response.access_token;
+        return response;
+    }
+
+    async logout(): Promise<{ message: string }> {
+        const response = await this.request<{ message: string }>("POST", "/api/auth/logout");
+        this.token = null;
+        return response;
+    }
+
+    async refreshToken(): Promise<TokenResource> {
+        const response = await this.request<ApiResponse<TokenResource>>(
+            "POST",
+            "/api/auth/refresh"
+        );
         this.token = response.data.access_token;
         return response.data;
     }
 
-    async logout(): Promise<{ message: string }> {
-        const response = await this.api.post<{ message: string }>("/api/auth/logout");
-        this.token = null;
-        return response.data;
-    }
-
-    async refreshToken(): Promise<TokenResource> {
-        const response = await this.api.post<ApiResponse<TokenResource>>("/api/auth/refresh");
-        this.token = response.data.data.access_token;
-        return response.data.data;
-    }
-
     async getCurrentUser(): Promise<User> {
-        const response = await this.api.post<ApiResponse<User>>("/api/auth/me");
-        return response.data.data;
+        const response = await this.request<ApiResponse<User>>("POST", "/api/auth/me");
+        return response.data;
     }
 
     // Advertiser methods
     async getAdvertisers(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<Advertiser[]>> {
-        const response = await this.api.get<ApiResponse<Advertiser[]>>("/api/advertisers", {
-            params,
-        });
-        return response.data;
+        return await this.request<ApiResponse<Advertiser[]>>(
+            "GET",
+            "/api/advertisers",
+            undefined,
+            params
+        );
     }
 
     // Agency methods
     async getAgencies(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<Agency[]>> {
-        const response = await this.api.get<ApiResponse<Agency[]>>("/api/agencies", { params });
-        return response.data;
+        return await this.request<ApiResponse<Agency[]>>("GET", "/api/agencies", undefined, params);
     }
 
     // Block methods
     async getBlockById(id: number): Promise<Block> {
-        const response = await this.api.get<ApiResponse<Block>>(`/api/blocks/${id}`);
-        return response.data.data;
+        const response = await this.request<ApiResponse<Block>>("GET", `/api/blocks/${id}`);
+        return response.data;
     }
 
     async addSpotToBlock(
@@ -727,61 +127,69 @@ class OpenMediaLogicClient {
         },
         force?: boolean
     ): Promise<Block> {
-        const response = await this.api.post<ApiResponse<Block>>(
+        const response = await this.request<ApiResponse<Block>>(
+            "POST",
             `/api/blocks/${blockId}/spots`,
             data,
-            {
-                params: { force },
-            }
+            { force: force ? "true" : undefined }
         );
-        return response.data.data;
+        return response.data;
     }
 
     async deleteSpotFromBlock(blockId: number, spotId: number): Promise<Block> {
-        const response = await this.api.delete<ApiResponse<Block>>(
+        const response = await this.request<ApiResponse<Block>>(
+            "DELETE",
             `/api/blocks/${blockId}/spots/${spotId}`
         );
-        return response.data.data;
+        return response.data;
     }
 
     // BlockType methods
     async getBlockTypes(): Promise<BlockType[]> {
-        const response = await this.api.get<ApiResponse<BlockType[]>>("/api/block_types");
-        return response.data.data;
+        const response = await this.request<ApiResponse<BlockType[]>>("GET", "/api/block_types");
+        return response.data;
     }
 
     // BrandClass methods
     async getBrandClasses(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<BrandClass[]>> {
-        const response = await this.api.get<ApiResponse<BrandClass[]>>("/api/brand_classes", {
-            params,
-        });
-        return response.data;
+        return await this.request<ApiResponse<BrandClass[]>>(
+            "GET",
+            "/api/brand_classes",
+            undefined,
+            params
+        );
     }
 
     // Brand methods
     async getBrands(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<Brand[]>> {
-        const response = await this.api.get<ApiResponse<Brand[]>>("/api/brands", { params });
-        return response.data;
+        return await this.request<ApiResponse<Brand[]>>("GET", "/api/brands", undefined, params);
     }
 
     // BrandGroup methods
     async getBrandGroups(brandClassId?: number): Promise<BrandGroup[]> {
-        const response = await this.api.get<ApiResponse<BrandGroup[]>>("/api/brand_groups", {
-            params: { brand_class_id: brandClassId },
-        });
-        return response.data.data;
+        const response = await this.request<ApiResponse<BrandGroup[]>>(
+            "GET",
+            "/api/brand_groups",
+            undefined,
+            { brand_class_id: brandClassId }
+        );
+        return response.data;
     }
 
     // Channel methods
     async getChannels(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<Channel[]>> {
-        const response = await this.api.get<ApiResponse<Channel[]>>("/api/channels", { params });
-        return response.data;
+        return await this.request<ApiResponse<Channel[]>>(
+            "GET",
+            "/api/channels",
+            undefined,
+            params
+        );
     }
 
     async getChannelBooking(
@@ -794,126 +202,196 @@ class OpenMediaLogicClient {
         orderId?: number,
         mediaplanId?: number
     ): Promise<any> {
-        const response = await this.api.get(`/api/channels/${channelId}/booking`, {
-            params: {
-                date_start_at: dateStartAt,
-                date_end_at: dateEndAt,
-                commercial_type_id: commercialTypeId,
-                block_type_id: blockTypeId,
-                project_id: projectId,
-                order_id: orderId,
-                mediaplan_id: mediaplanId,
-            },
+        return await this.request<any>("GET", `/api/channels/${channelId}/booking`, undefined, {
+            date_start_at: dateStartAt,
+            date_end_at: dateEndAt,
+            commercial_type_id: commercialTypeId,
+            block_type_id: blockTypeId,
+            project_id: projectId,
+            order_id: orderId,
+            mediaplan_id: mediaplanId,
         });
-        return response.data;
     }
 
     // ChannelCompany methods
     async getChannelCompanies(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<ChannelCompany[]>> {
-        const response = await this.api.get<ApiResponse<ChannelCompany[]>>(
+        return await this.request<ApiResponse<ChannelCompany[]>>(
+            "GET",
             "/api/channel_companies",
-            { params }
+            undefined,
+            params
         );
-        return response.data;
     }
 
     // Commercial methods
     async getCommercials(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams
     ): Promise<ApiResponse<Commercial[]>> {
-        const response = await this.api.get<ApiResponse<Commercial[]>>("/api/commercials", {
-            params,
-        });
-        return response.data;
+        return await this.request<ApiResponse<Commercial[]>>(
+            "GET",
+            "/api/commercials",
+            undefined,
+            params
+        );
     }
 
     // CommercialType methods
     async getCommercialTypes(): Promise<CommercialType[]> {
-        const response = await this.api.get<ApiResponse<CommercialType[]>>("/api/commercial_types");
-        return response.data.data;
+        const response = await this.request<ApiResponse<CommercialType[]>>(
+            "GET",
+            "/api/commercial_types"
+        );
+        return response.data;
     }
 
     // CommercialVersionType methods
     async getCommercialVersionTypes(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<CommercialVersionType[]>> {
-        const response = await this.api.get<ApiResponse<CommercialVersionType[]>>(
+        return await this.request<ApiResponse<CommercialVersionType[]>>(
+            "GET",
             "/api/commercial_version_types",
-            { params }
+            undefined,
+            params
         );
-        return response.data;
     }
 
     // MeasurementCompany methods
     async getMeasurementCompanies(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<MeasurementCompany[]>> {
-        const response = await this.api.get<ApiResponse<MeasurementCompany[]>>(
+        return await this.request<ApiResponse<MeasurementCompany[]>>(
+            "GET",
             "/api/measurement_companies",
-            { params }
+            undefined,
+            params
         );
-        return response.data;
     }
 
     // Mediaplan methods
     async getMediaplans(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams
     ): Promise<ApiResponse<Mediaplan[]>> {
-        const response = await this.api.get<ApiResponse<Mediaplan[]>>("/api/mediaplans", {
-            params,
-        });
-        return response.data;
+        return await this.request<ApiResponse<Mediaplan[]>>(
+            "GET",
+            "/api/mediaplans",
+            undefined,
+            params
+        );
     }
 
     // Order methods
     async getOrders(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams
     ): Promise<ApiResponse<Order[]>> {
-        const response = await this.api.get<ApiResponse<Order[]>>("/api/orders", { params });
-        return response.data;
+        return await this.request<ApiResponse<Order[]>>("GET", "/api/orders", undefined, params);
     }
 
     // PlacementType methods
     async getPlacementTypes(): Promise<PlacementType[]> {
-        const response = await this.api.get<ApiResponse<PlacementType[]>>("/api/placement_types");
-        return response.data.data;
+        const response = await this.request<ApiResponse<PlacementType[]>>(
+            "GET",
+            "/api/placement_types"
+        );
+        return response.data;
     }
 
     // Project methods
     async getProjects(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams
     ): Promise<ApiResponse<Project[]>> {
-        const response = await this.api.get<ApiResponse<Project[]>>("/api/projects", { params });
-        return response.data;
+        return await this.request<ApiResponse<Project[]>>(
+            "GET",
+            "/api/projects",
+            undefined,
+            params
+        );
     }
 
     // Saleshouse methods
     async getSaleshouses(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<Saleshouse[]>> {
-        const response = await this.api.get<ApiResponse<Saleshouse[]>>("/api/saleshouses", {
-            params,
-        });
-        return response.data;
+        return await this.request<ApiResponse<Saleshouse[]>>(
+            "GET",
+            "/api/saleshouses",
+            undefined,
+            params
+        );
     }
 
     // TargetAudience methods
     async getTargetAudiences(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<TargetAudience[]>> {
-        const response = await this.api.get<ApiResponse<TargetAudience[]>>(
+        return await this.request<ApiResponse<TargetAudience[]>>(
+            "GET",
             "/api/target_audiences",
-            { params }
+            undefined,
+            params
         );
-        return response.data;
     }
 
     // Year methods
     async getYears(): Promise<Year[]> {
-        const response = await this.api.get<ApiResponse<Year[]>>("/api/years");
-        return response.data.data;
+        const response = await this.request<ApiResponse<Year[]>>("GET", "/api/years");
+        return response.data;
+    }
+
+    private getHeaders(): HeadersInit {
+        const headers: HeadersInit = {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        };
+
+        if (this.token) {
+            headers["Authorization"] = `Bearer ${this.token}`;
+        }
+
+        return headers;
+    }
+
+    private async request<T>(
+        method: string,
+        endpoint: string,
+        data?: unknown,
+        params?: RequestParams
+    ): Promise<T> {
+        // Build URL with query parameters
+        const url = new URL(endpoint, this.baseUrl);
+
+        if (params) {
+            Object.entries(params).forEach(([key, value]) => {
+                if (value !== undefined) {
+                    url.searchParams.append(key, String(value));
+                }
+            });
+        }
+
+        // Configure fetch options
+        const options: RequestInit = {
+            method,
+            headers: this.getHeaders(),
+        };
+
+        // Add body for POST, PUT, PATCH requests
+        if (data && ["POST", "PUT", "PATCH"].includes(method)) {
+            options.body = JSON.stringify(data);
+        }
+
+        // Execute request
+        const response = await fetch(url.toString(), options);
+
+        // Handle non-successful responses
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`API Error: ${response.status} ${response.statusText} - ${errorText}`);
+        }
+
+        // Parse JSON response
+        return (await response.json()) as T;
     }
 }
 
