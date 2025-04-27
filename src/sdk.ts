@@ -1,5 +1,8 @@
-// OpenMediaLogic API TypeScript SDK
-// Generated SDK for OpenMediaLogic API
+/**
+ * OpenMediaLogic API TypeScript SDK
+ * Generated SDK for OpenMediaLogic API for working with TV advertising platforms.
+ * Provides access to projects, orders, mediaplans, and booking functionality.
+ */
 
 import { FilterParams } from "./types/params/filterParams.js";
 import { SortParams } from "./types/params/sortParams.js";
@@ -51,32 +54,55 @@ export interface UserLoginRequest {
 
 type RequestParams = Record<string, string | number | boolean | undefined>;
 
-// API client class
+/**
+ * OpenMediaLogic API client class
+ * Main client for interacting with the OpenMediaLogic API
+ */
 class OpenMediaLogicClient {
     private baseUrl: string;
     private token: string | null = null;
 
+    /**
+     * Creates a new instance of the OpenMediaLogic API client
+     * @param baseUrl - Base URL of the OpenMediaLogic API (defaults to "http://localhost")
+     */
     constructor(baseUrl: string = "http://localhost") {
         this.baseUrl = baseUrl;
     }
 
+    /**
+     * Sets the authentication token for API requests
+     * @param token - JWT token to use for authentication, or null to clear the token
+     */
     setToken(token: string | null = null): void {
         this.token = token;
     }
 
-    // Authentication methods
+    /**
+     * Authenticates a user with the OpenMediaLogic API
+     * @param credentials - User login credentials (username and password)
+     * @returns Authentication token information
+     */
     async login(credentials: UserLoginRequest): Promise<TokenResource> {
         const response = await this.request<TokenResource>("POST", "/api/auth/login", credentials);
         this.token = response.access_token;
         return response;
     }
 
+    /**
+     * Logs out the current user and clears the authentication token
+     * @returns Message indicating successful logout
+     */
     async logout(): Promise<{ message: string }> {
         const response = await this.request<{ message: string }>("POST", "/api/auth/logout");
         this.token = null;
         return response;
     }
 
+    /**
+     * Refreshes the current authentication token
+     * @returns New authentication token information
+     */
     async refreshToken(): Promise<TokenResource> {
         const response = await this.request<ApiResponse<TokenResource>>(
             "POST",
@@ -86,12 +112,20 @@ class OpenMediaLogicClient {
         return response.data;
     }
 
+    /**
+     * Retrieves information about the currently authenticated user
+     * @returns Information about the current user
+     */
     async getCurrentUser(): Promise<User> {
         const response = await this.request<ApiResponse<User>>("POST", "/api/auth/me");
         return response.data;
     }
 
-    // Advertiser methods
+    /**
+     * Retrieves a list of advertisers
+     * @param params - Optional parameters for pagination, filtering, sorting, including relations, and selecting fields
+     * @returns List of advertisers and pagination information
+     */
     async getAdvertisers(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<Advertiser[]>> {
@@ -103,19 +137,34 @@ class OpenMediaLogicClient {
         );
     }
 
-    // Agency methods
+    /**
+     * Retrieves a list of agencies
+     * @param params - Optional parameters for pagination, filtering, sorting, including relations, and selecting fields
+     * @returns List of agencies and pagination information
+     */
     async getAgencies(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<Agency[]>> {
         return await this.request<ApiResponse<Agency[]>>("GET", "/api/agencies", undefined, params);
     }
 
-    // Block methods
+    /**
+     * Retrieves detailed information about a specific block by ID
+     * @param id - Block ID to retrieve
+     * @returns Block information
+     */
     async getBlockById(id: number): Promise<Block> {
         const response = await this.request<ApiResponse<Block>>("GET", `/api/blocks/${id}`);
         return response.data;
     }
 
+    /**
+     * Adds a spot (commercial placement) to a specific block
+     * @param blockId - ID of the block to add the spot to
+     * @param data - Spot data including commercial ID, mediaplan ID, and optional position/priority
+     * @param force - Optional flag to force placement even if validation fails
+     * @returns Updated block information with the new spot
+     */
     async addSpotToBlock(
         blockId: number,
         data: {
@@ -136,6 +185,12 @@ class OpenMediaLogicClient {
         return response.data;
     }
 
+    /**
+     * Removes a spot from a block
+     * @param blockId - ID of the block containing the spot
+     * @param spotId - ID of the spot to remove
+     * @returns Updated block information without the removed spot
+     */
     async deleteSpotFromBlock(blockId: number, spotId: number): Promise<Block> {
         const response = await this.request<ApiResponse<Block>>(
             "DELETE",
@@ -144,13 +199,20 @@ class OpenMediaLogicClient {
         return response.data;
     }
 
-    // BlockType methods
+    /**
+     * Retrieves a list of available block types
+     * @returns List of block types
+     */
     async getBlockTypes(): Promise<BlockType[]> {
         const response = await this.request<ApiResponse<BlockType[]>>("GET", "/api/block_types");
         return response.data;
     }
 
-    // BrandClass methods
+    /**
+     * Retrieves a list of brand classes
+     * @param params - Optional parameters for pagination, filtering, sorting, including relations, and selecting fields
+     * @returns List of brand classes and pagination information
+     */
     async getBrandClasses(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<BrandClass[]>> {
@@ -162,14 +224,22 @@ class OpenMediaLogicClient {
         );
     }
 
-    // Brand methods
+    /**
+     * Retrieves a list of brands
+     * @param params - Optional parameters for pagination, filtering, sorting, including relations, and selecting fields
+     * @returns List of brands and pagination information
+     */
     async getBrands(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<Brand[]>> {
         return await this.request<ApiResponse<Brand[]>>("GET", "/api/brands", undefined, params);
     }
 
-    // BrandGroup methods
+    /**
+     * Retrieves a list of brand groups, optionally filtered by brand class
+     * @param brandClassId - Optional brand class ID to filter groups by
+     * @returns List of brand groups
+     */
     async getBrandGroups(brandClassId?: number): Promise<BrandGroup[]> {
         const response = await this.request<ApiResponse<BrandGroup[]>>(
             "GET",
@@ -180,7 +250,11 @@ class OpenMediaLogicClient {
         return response.data;
     }
 
-    // Channel methods
+    /**
+     * Retrieves a list of TV channels
+     * @param params - Optional parameters for pagination, filtering, sorting, including relations, and selecting fields
+     * @returns List of channels and pagination information
+     */
     async getChannels(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<Channel[]>> {
@@ -192,6 +266,18 @@ class OpenMediaLogicClient {
         );
     }
 
+    /**
+     * Retrieves booking grid data for a specific channel and date range
+     * @param channelId - ID of the channel to get booking data for
+     * @param dateStartAt - Start date for booking data (YYYY-MM-DD)
+     * @param dateEndAt - Optional end date for booking data (YYYY-MM-DD)
+     * @param commercialTypeId - Optional commercial type ID to filter by
+     * @param blockTypeId - Optional block type ID to filter by
+     * @param projectId - Optional project ID to filter by
+     * @param orderId - Optional order ID to filter by
+     * @param mediaplanId - Optional mediaplan ID to filter by
+     * @returns Booking grid data with blocks and available time slots
+     */
     async getChannelBooking(
         channelId: number,
         dateStartAt: string,
@@ -213,7 +299,11 @@ class OpenMediaLogicClient {
         });
     }
 
-    // ChannelCompany methods
+    /**
+     * Retrieves a list of channel companies (broadcasters)
+     * @param params - Optional parameters for pagination, filtering, sorting, including relations, and selecting fields
+     * @returns List of channel companies and pagination information
+     */
     async getChannelCompanies(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<ChannelCompany[]>> {
@@ -225,7 +315,11 @@ class OpenMediaLogicClient {
         );
     }
 
-    // Commercial methods
+    /**
+     * Retrieves a list of commercials (ad spots)
+     * @param params - Optional parameters for pagination, filtering, sorting, and including relations
+     * @returns List of commercials and pagination information
+     */
     async getCommercials(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams
     ): Promise<ApiResponse<Commercial[]>> {
@@ -237,7 +331,10 @@ class OpenMediaLogicClient {
         );
     }
 
-    // CommercialType methods
+    /**
+     * Retrieves a list of commercial types
+     * @returns List of commercial types
+     */
     async getCommercialTypes(): Promise<CommercialType[]> {
         const response = await this.request<ApiResponse<CommercialType[]>>(
             "GET",
@@ -246,7 +343,11 @@ class OpenMediaLogicClient {
         return response.data;
     }
 
-    // CommercialVersionType methods
+    /**
+     * Retrieves a list of commercial version types
+     * @param params - Optional parameters for pagination, filtering, sorting, including relations, and selecting fields
+     * @returns List of commercial version types and pagination information
+     */
     async getCommercialVersionTypes(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<CommercialVersionType[]>> {
@@ -258,7 +359,11 @@ class OpenMediaLogicClient {
         );
     }
 
-    // MeasurementCompany methods
+    /**
+     * Retrieves a list of measurement companies (agencies that provide audience measurement data)
+     * @param params - Optional parameters for pagination, filtering, sorting, including relations, and selecting fields
+     * @returns List of measurement companies and pagination information
+     */
     async getMeasurementCompanies(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<MeasurementCompany[]>> {
@@ -270,7 +375,11 @@ class OpenMediaLogicClient {
         );
     }
 
-    // Mediaplan methods
+    /**
+     * Retrieves a list of mediaplans
+     * @param params - Optional parameters for pagination, filtering, sorting, and including relations
+     * @returns List of mediaplans and pagination information
+     */
     async getMediaplans(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams
     ): Promise<ApiResponse<Mediaplan[]>> {
@@ -282,14 +391,21 @@ class OpenMediaLogicClient {
         );
     }
 
-    // Order methods
+    /**
+     * Retrieves a list of orders
+     * @param params - Optional parameters for pagination, filtering, sorting, and including relations
+     * @returns List of orders and pagination information
+     */
     async getOrders(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams
     ): Promise<ApiResponse<Order[]>> {
         return await this.request<ApiResponse<Order[]>>("GET", "/api/orders", undefined, params);
     }
 
-    // PlacementType methods
+    /**
+     * Retrieves a list of placement types
+     * @returns List of placement types
+     */
     async getPlacementTypes(): Promise<PlacementType[]> {
         const response = await this.request<ApiResponse<PlacementType[]>>(
             "GET",
@@ -298,7 +414,11 @@ class OpenMediaLogicClient {
         return response.data;
     }
 
-    // Project methods
+    /**
+     * Retrieves a list of advertising projects
+     * @param params - Optional parameters for pagination, filtering, sorting, and including relations
+     * @returns List of projects and pagination information
+     */
     async getProjects(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams
     ): Promise<ApiResponse<Project[]>> {
@@ -310,7 +430,11 @@ class OpenMediaLogicClient {
         );
     }
 
-    // Saleshouse methods
+    /**
+     * Retrieves a list of saleshouses (advertising sales organizations)
+     * @param params - Optional parameters for pagination, filtering, sorting, including relations, and selecting fields
+     * @returns List of saleshouses and pagination information
+     */
     async getSaleshouses(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<Saleshouse[]>> {
@@ -322,7 +446,11 @@ class OpenMediaLogicClient {
         );
     }
 
-    // TargetAudience methods
+    /**
+     * Retrieves a list of target audiences for ad targeting
+     * @param params - Optional parameters for pagination, filtering, sorting, including relations, and selecting fields
+     * @returns List of target audiences and pagination information
+     */
     async getTargetAudiences(
         params?: PaginationParams & FilterParams & SortParams & IncludeParams & FieldParams
     ): Promise<ApiResponse<TargetAudience[]>> {
@@ -334,12 +462,20 @@ class OpenMediaLogicClient {
         );
     }
 
-    // Year methods
+    /**
+     * Retrieves a list of years available in the system
+     * @returns List of years
+     */
     async getYears(): Promise<Year[]> {
         const response = await this.request<ApiResponse<Year[]>>("GET", "/api/years");
         return response.data;
     }
 
+    /**
+     * Generates headers for API requests, including authentication if token is set
+     * @returns Headers object with content type and optional authentication
+     * @private
+     */
     private getHeaders(): HeadersInit {
         const headers: HeadersInit = {
             "Content-Type": "application/json",
@@ -353,6 +489,15 @@ class OpenMediaLogicClient {
         return headers;
     }
 
+    /**
+     * Makes an HTTP request to the OpenMediaLogic API
+     * @param method - HTTP method (GET, POST, PUT, DELETE, etc.)
+     * @param endpoint - API endpoint path
+     * @param data - Optional data to send in the request body
+     * @param params - Optional query parameters
+     * @returns Parsed API response
+     * @private
+     */
     private async request<T>(
         method: string,
         endpoint: string,

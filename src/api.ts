@@ -1,12 +1,28 @@
+/**
+ * Extended request options for API calls
+ */
 type RequestOptions = RequestInit & {
+    /** Path parameters to append to the URL */
     params?: string[];
+    /** Query parameters for the request */
     query?: Record<string, any>;
+    /** Request body data */
     body?: any;
-    expectResponse?: boolean; // New option to determine if response processing is needed
+    /** Whether to expect and process a response (defaults to true) */
+    expectResponse?: boolean;
 };
 
-type ApiResponse<T> = Promise<T>; // Modified to include void for no-response cases
+/**
+ * Generic API response type
+ */
+type ApiResponse<T> = Promise<T>;
 
+/**
+ * Serializes a query parameter key-value pair
+ * @param key - The parameter key
+ * @param value - The parameter value
+ * @returns Tuple containing the key and serialized value
+ */
 const serializeQueryParam = (key: string, value: any): [string, string] => {
     if (value && typeof value === "object") {
         return [key, JSON.stringify(value)];
@@ -15,13 +31,22 @@ const serializeQueryParam = (key: string, value: any): [string, string] => {
     return [key, String(value)];
 };
 
+/**
+ * Builds a complete URL with path parameters and query string
+ * @param path - Base URL path
+ * @param params - Path parameters to append to the URL
+ * @param query - Query parameters to add as querystring
+ * @returns Complete URL string
+ */
 const buildUrl = (path: string, params: string[] = [], query: Record<string, any> = {}) => {
     let fullPath = path;
 
+    // Append path parameters
     for (const param of params) {
         fullPath += `/${param}`;
     }
 
+    // Build query string with proper handling of nested objects and arrays
     const searchParams = new URLSearchParams();
     Object.entries(query).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
@@ -46,6 +71,7 @@ const buildUrl = (path: string, params: string[] = [], query: Record<string, any
         }
     });
 
+    // Append query string if it exists
     const queryString = searchParams.toString();
     if (queryString) {
         fullPath += `?${queryString}`;
@@ -54,6 +80,12 @@ const buildUrl = (path: string, params: string[] = [], query: Record<string, any
     return fullPath;
 };
 
+/**
+ * Performs an HTTP request with enhanced handling of different response types
+ * @param path - API endpoint path
+ * @param options - Request options including params, query, body, headers, etc.
+ * @returns Promise resolving to the response data
+ */
 const customFetch = async <T>(path: string, options: RequestOptions = {}): ApiResponse<T> => {
     const {
         params = [],
@@ -139,7 +171,19 @@ const customFetch = async <T>(path: string, options: RequestOptions = {}): ApiRe
     }
 };
 
+/**
+ * Main API interface for making HTTP requests
+ */
 const api = {
+    /**
+     * Performs a GET request
+     * @param path - API endpoint path
+     * @param params - Path parameters to append to the URL
+     * @param query - Query parameters
+     * @param options - Additional request options
+     * @param expectResponse - Whether to expect and process a response
+     * @returns Promise resolving to the response data
+     */
     get: <T>({
         path,
         params,
@@ -162,6 +206,16 @@ const api = {
         });
     },
 
+    /**
+     * Performs a POST request
+     * @param path - API endpoint path
+     * @param params - Path parameters to append to the URL
+     * @param body - Request body data
+     * @param query - Query parameters
+     * @param options - Additional request options
+     * @param expectResponse - Whether to expect and process a response
+     * @returns Promise resolving to the response data
+     */
     post: <T>({
         path,
         params,
@@ -187,6 +241,16 @@ const api = {
         });
     },
 
+    /**
+     * Performs a PUT request
+     * @param path - API endpoint path
+     * @param params - Path parameters to append to the URL
+     * @param body - Request body data
+     * @param query - Query parameters
+     * @param options - Additional request options
+     * @param expectResponse - Whether to expect and process a response
+     * @returns Promise resolving to the response data
+     */
     put: <T>({
         path,
         params,
@@ -212,6 +276,16 @@ const api = {
         });
     },
 
+    /**
+     * Performs a PATCH request
+     * @param path - API endpoint path
+     * @param params - Path parameters to append to the URL
+     * @param body - Request body data
+     * @param query - Query parameters
+     * @param options - Additional request options
+     * @param expectResponse - Whether to expect and process a response
+     * @returns Promise resolving to the response data
+     */
     patch: <T>({
         path,
         params,
@@ -237,6 +311,16 @@ const api = {
         });
     },
 
+    /**
+     * Performs a DELETE request
+     * @param path - API endpoint path
+     * @param params - Path parameters to append to the URL
+     * @param body - Request body data
+     * @param query - Query parameters
+     * @param options - Additional request options
+     * @param expectResponse - Whether to expect and process a response
+     * @returns Promise resolving to the response data
+     */
     delete: <T>({
         path,
         params,
@@ -261,7 +345,19 @@ const api = {
             ...options,
         });
     },
+    /**
+     * Methods for sending requests without expecting a response (fire-and-forget)
+     */
     sendOnly: {
+        /**
+         * Sends a POST request without expecting a response
+         * @param path - API endpoint path
+         * @param params - Path parameters to append to the URL
+         * @param body - Request body data
+         * @param query - Query parameters
+         * @param options - Additional request options
+         * @returns Promise that resolves when the request completes
+         */
         post: ({
             path,
             params,
@@ -285,6 +381,15 @@ const api = {
             });
         },
 
+        /**
+         * Sends a PUT request without expecting a response
+         * @param path - API endpoint path
+         * @param params - Path parameters to append to the URL
+         * @param body - Request body data
+         * @param query - Query parameters
+         * @param options - Additional request options
+         * @returns Promise that resolves when the request completes
+         */
         put: ({
             path,
             params,
@@ -308,6 +413,15 @@ const api = {
             });
         },
 
+        /**
+         * Sends a PATCH request without expecting a response
+         * @param path - API endpoint path
+         * @param params - Path parameters to append to the URL
+         * @param body - Request body data
+         * @param query - Query parameters
+         * @param options - Additional request options
+         * @returns Promise that resolves when the request completes
+         */
         patch: ({
             path,
             params,
@@ -331,6 +445,15 @@ const api = {
             });
         },
 
+        /**
+         * Sends a DELETE request without expecting a response
+         * @param path - API endpoint path
+         * @param params - Path parameters to append to the URL
+         * @param body - Request body data
+         * @param query - Query parameters
+         * @param options - Additional request options
+         * @returns Promise that resolves when the request completes
+         */
         delete: ({
             path,
             params,
@@ -355,6 +478,13 @@ const api = {
         },
     },
 
+    /**
+     * Downloads a file from the given URL
+     * @param url - URL of the file to download
+     * @param filename - Name to save the file as
+     * @param options - Additional request options
+     * @returns Promise that resolves when the download completes
+     */
     downloadFile: async ({
         url,
         filename,
