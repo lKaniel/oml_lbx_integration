@@ -34,13 +34,13 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Install only production dependencies for publishing
+      - name: Configure npm for production dependencies only
         run: |
-          pnpm prune
-          pnpm install --prod
+          echo "save-dev=false" >> .npmrc
+          echo "only=prod" >> .npmrc
 
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release
+        run: pnpm exec semantic-release
