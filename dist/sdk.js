@@ -175,5 +175,5 @@ class OpenMediaLogicClient {
         return (await response.json());
     }
 }
-export default OpenMediaLogicClient;
+export { OpenMediaLogicClient };
 //# sourceMappingURL=sdk.js.map
